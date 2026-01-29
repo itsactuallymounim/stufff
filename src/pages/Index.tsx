@@ -2,7 +2,8 @@ import { useState } from "react";
 import IOSPillButton from "@/components/IOSPillButton";
 import BentoGrid from "@/components/BentoGrid";
 import CreateNoteDialog from "@/components/CreateNoteDialog";
-import { Note, noteColors } from "@/types/note";
+import GoogleAuthButton from "@/components/GoogleAuthButton";
+import { Note } from "@/types/note";
 
 const Index = () => {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -40,13 +41,13 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <span className="text-sm text-muted-foreground">iOS 26</span>
               <h1 className="text-3xl font-semibold text-foreground">Notes</h1>
             </div>
-            <div className="text-right">
+            <div className="flex items-center gap-4">
               <p className="text-sm text-muted-foreground">
                 {notes.length} {notes.length === 1 ? "note" : "notes"}
               </p>
+              <GoogleAuthButton />
             </div>
           </div>
         </div>
@@ -58,35 +59,13 @@ const Index = () => {
           {!hasNotes ? (
             /* Hero section when no notes */
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-              <div
-                className="mb-8 px-4 py-2 rounded-full glass text-sm font-medium text-muted-foreground animate-scale-in"
-                style={{ animationDelay: "0.1s" }}
-              >
-                iOS 26 • Notes Reimagined
-              </div>
-
               <h2
                 className="text-5xl sm:text-7xl font-semibold tracking-tight text-foreground mb-6 opacity-0 animate-fade-up"
-                style={{ animationDelay: "0.2s" }}
+                style={{ animationDelay: "0.1s" }}
               >
                 Capture
                 <span className="block text-gradient">everything.</span>
               </h2>
-
-              <p
-                className="text-lg sm:text-xl text-muted-foreground max-w-md mb-8 opacity-0 animate-fade-up"
-                style={{ animationDelay: "0.4s" }}
-              >
-                A beautifully minimal note-taking experience designed for the
-                way you think.
-              </p>
-
-              <p
-                className="text-sm text-muted-foreground/60 opacity-0 animate-fade-up"
-                style={{ animationDelay: "0.6s" }}
-              >
-                Tap + to create your first note
-              </p>
             </div>
           ) : (
             /* Bento grid when notes exist */
