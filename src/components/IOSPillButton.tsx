@@ -37,7 +37,6 @@ const IOSPillButton = ({ onAddClick, profileImage }: IOSPillButtonProps) => {
           relative w-14 h-14 rounded-full bg-accent flex items-center justify-center
           transition-all duration-300 ease-out
           hover:scale-110 active:scale-95
-          ${isHovered ? "animate-pulse-glow" : ""}
         `}
       >
         <Plus 
