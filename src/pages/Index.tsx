@@ -41,7 +41,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <h1 className="text-3xl font-semibold text-foreground">Notes</h1>
+              <h1 className="text-3xl font-semibold text-foreground">Stufff</h1>
             </div>
             <div className="flex items-center gap-4">
               <p className="text-sm text-muted-foreground">
