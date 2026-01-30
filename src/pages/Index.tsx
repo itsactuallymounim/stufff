@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import IOSPillButton from "@/components/IOSPillButton";
 import BentoGrid from "@/components/BentoGrid";
 import CreateNoteDialog from "@/components/CreateNoteDialog";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
+import AISearchBar from "@/components/AISearchBar";
 import { Note } from "@/types/note";
 
 const Index = () => {
@@ -26,6 +27,14 @@ const Index = () => {
     setNotes((prev) => prev.filter((note) => note.id !== id));
   };
 
+  // Create context string from notes for AI summarization
+  const notesContext = useMemo(() => {
+    if (notes.length === 0) return undefined;
+    return notes
+      .map((note) => `Title: ${note.title}\nContent: ${note.content}`)
+      .join("\n\n---\n\n");
+  }, [notes]);
+
   const hasNotes = notes.length > 0;
 
   return (
@@ -39,11 +48,12 @@ const Index = () => {
       {/* Header */}
       <header className="relative z-10 px-6 py-8">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-semibold text-foreground">Stufff</h1>
             </div>
             <div className="flex items-center gap-4">
+              <AISearchBar notesContext={notesContext} />
               <p className="text-sm text-muted-foreground">
                 {notes.length} {notes.length === 1 ? "note" : "notes"}
               </p>
