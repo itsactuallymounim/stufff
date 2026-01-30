@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { validateSearchInput } from "@/lib/validation";
+import { validateSearchInput, type SearchQuery } from "@/lib/validation";
 import { toast } from "sonner";
 
 interface AISearchResult {
