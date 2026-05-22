@@ -91,8 +91,8 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
         </p>
       </div>
 
-      {/* Subtle glass overlay */}
-      <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white/20 to-transparent" />
+      {/* Refined glass overlay */}
+      <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white/10 via-transparent to-white/5" />
 
       {/* AI Summary panel */}
       {showSummary && (
