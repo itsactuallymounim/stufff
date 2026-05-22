@@ -1,5 +1,8 @@
 import { Note } from "@/types/note";
-import { Trash2 } from "lucide-react";
+import { Trash2, Sparkles, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useAISearch } from "@/hooks/useAISearch";
+import ReactMarkdown from "react-markdown";
 
 interface NoteCardProps {
   note: Note;
@@ -14,6 +17,22 @@ const sizeClasses = {
 };
 
 const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
+  const [showSummary, setShowSummary] = useState(false);
+  const { summarize, result, isLoading, error, clearResult } = useAISearch();
+
+  const handleSummarize = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowSummary(true);
+    const context = `Title: ${note.title}\nContent: ${note.content}`;
+    await summarize("Summarize this note concisely.", context);
+  };
+
+  const handleCloseSummary = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowSummary(false);
+    clearResult();
+  };
+
   return (
     <div
       onClick={() => onClick?.(note)}
@@ -34,18 +53,27 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
       `}
       style={{ backgroundColor: note.color }}
     >
-      {/* Delete button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete(note.id);
-        }}
-        className="absolute top-3 right-3 p-2 rounded-full bg-destructive/10 text-destructive 
-                   opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                   hover:bg-destructive/20"
-      >
-        <Trash2 className="w-4 h-4" />
-      </button>
+      {/* Action buttons */}
+      <div className="absolute top-3 right-3 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+        <button
+          onClick={handleSummarize}
+          disabled={isLoading}
+          aria-label="Summarize with AI"
+          className="p-2 rounded-full bg-accent/15 text-accent hover:bg-accent/25 disabled:opacity-60"
+        >
+          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(note.id);
+          }}
+          aria-label="Delete note"
+          className="p-2 rounded-full bg-destructive/10 text-destructive hover:bg-destructive/20"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      </div>
 
       {/* Note content */}
       <div className="h-full flex flex-col">
@@ -65,6 +93,38 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
 
       {/* Subtle glass overlay */}
       <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white/20 to-transparent" />
+
+      {/* AI Summary panel */}
+      {showSummary && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="absolute inset-0 rounded-2xl bg-card/95 backdrop-blur-lg border border-border p-4 overflow-y-auto animate-fade-up z-20"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5 text-accent text-xs font-medium">
+              <Sparkles className="w-3 h-3" /> AI Summary
+            </div>
+            <button
+              onClick={handleCloseSummary}
+              className="text-xs text-muted-foreground hover:text-foreground"
+              aria-label="Close summary"
+            >
+              Close
+            </button>
+          </div>
+          {isLoading ? (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Loader2 className="w-3 h-3 animate-spin" /> Summarizing…
+            </div>
+          ) : error ? (
+            <p className="text-destructive text-sm">{error}</p>
+          ) : (
+            <div className="prose prose-sm dark:prose-invert max-w-none text-sm">
+              <ReactMarkdown>{result || ""}</ReactMarkdown>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
