@@ -46,10 +46,10 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
       }}
       className={`
         ${sizeClasses[note.size]}
-        group relative p-5 rounded-2xl shadow-soft
-        transition-all duration-300 ease-out
-        hover:scale-[1.02] hover:shadow-lg
-        animate-scale-in cursor-pointer
+        group relative p-5 rounded-2xl
+        cursor-pointer overflow-hidden
+        card-shimmer glass-depth card-float
+        animate-scale-in
       `}
       style={{ backgroundColor: note.color }}
     >
