@@ -35,6 +35,21 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
 
   return (
     <div
+      className={`${sizeClasses[note.size]} relative card-stack animate-scale-in`}
+    >
+      {/* Stacked layers behind */}
+      <div
+        aria-hidden
+        className="card-stack-layer card-stack-layer--back"
+        style={{ backgroundColor: note.color }}
+      />
+      <div
+        aria-hidden
+        className="card-stack-layer card-stack-layer--mid"
+        style={{ backgroundColor: note.color }}
+      />
+
+    <div
       onClick={() => onClick?.(note)}
       role="button"
       tabIndex={0}
@@ -45,11 +60,10 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
         }
       }}
       className={`
-        ${sizeClasses[note.size]}
-        group relative p-5 rounded-2xl
+        relative w-full h-full p-5 rounded-2xl
         cursor-pointer overflow-hidden
+        group
         card-shimmer glass-depth card-float
-        animate-scale-in
       `}
       style={{ backgroundColor: note.color }}
     >
@@ -125,6 +139,7 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 };
