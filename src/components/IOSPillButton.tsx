@@ -15,21 +15,6 @@ const IOSPillButton = ({ onAddClick, profileImage }: IOSPillButtonProps) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Profile Circle */}
-      <div className="relative w-14 h-14 rounded-full bg-pill-inner overflow-hidden flex items-center justify-center transition-transform duration-300 ease-out hover:scale-105">
-        {profileImage ? (
-          <img
-            src={profileImage}
-            alt="Profile"
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
-            <div className="w-8 h-8 rounded-full bg-muted-foreground/20" />
-          </div>
-        )}
-      </div>
-
       {/* Add Button */}
       <button
         onClick={onAddClick}
