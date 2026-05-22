@@ -9,8 +9,10 @@ import { Note } from "@/types/note";
 const Index = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   const handleAddNote = () => {
+    setEditingNote(null);
     setIsDialogOpen(true);
   };
 
@@ -21,6 +23,17 @@ const Index = () => {
       createdAt: new Date(),
     };
     setNotes((prev) => [newNote, ...prev]);
+  };
+
+  const handleUpdateNote = (id: string, noteData: Omit<Note, "id" | "createdAt">) => {
+    setNotes((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, ...noteData } : n))
+    );
+  };
+
+  const handleEditNote = (note: Note) => {
+    setEditingNote(note);
+    setIsDialogOpen(true);
   };
 
   const handleDeleteNote = (id: string) => {
@@ -79,7 +92,7 @@ const Index = () => {
             </div>
           ) : (
             /* Bento grid when notes exist */
-            <BentoGrid notes={notes} onDeleteNote={handleDeleteNote} />
+            <BentoGrid notes={notes} onDeleteNote={handleDeleteNote} onEditNote={handleEditNote} />
           )}
         </div>
       </main>
@@ -92,8 +105,13 @@ const Index = () => {
       {/* Create note dialog */}
       <CreateNoteDialog
         open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
+        onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (!open) setEditingNote(null);
+        }}
         onCreateNote={handleCreateNote}
+        editingNote={editingNote}
+        onUpdateNote={handleUpdateNote}
       />
 
       {/* Bottom safe area indicator (iOS style) */}

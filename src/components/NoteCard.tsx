@@ -4,6 +4,7 @@ import { Trash2 } from "lucide-react";
 interface NoteCardProps {
   note: Note;
   onDelete: (id: string) => void;
+  onClick?: (note: Note) => void;
 }
 
 const sizeClasses = {
@@ -12,9 +13,18 @@ const sizeClasses = {
   large: "col-span-1 row-span-2 sm:col-span-2 sm:row-span-2",
 };
 
-const NoteCard = ({ note, onDelete }: NoteCardProps) => {
+const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
   return (
     <div
+      onClick={() => onClick?.(note)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.(note);
+        }
+      }}
       className={`
         ${sizeClasses[note.size]}
         group relative p-5 rounded-2xl shadow-soft
