@@ -5,9 +5,10 @@ import { FileText } from "lucide-react";
 interface BentoGridProps {
   notes: Note[];
   onDeleteNote: (id: string) => void;
+  onEditNote?: (note: Note) => void;
 }
 
-const BentoGrid = ({ notes, onDeleteNote }: BentoGridProps) => {
+const BentoGrid = ({ notes, onDeleteNote, onEditNote }: BentoGridProps) => {
   if (notes.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-up">
@@ -29,7 +30,7 @@ const BentoGrid = ({ notes, onDeleteNote }: BentoGridProps) => {
           key={note.id}
           style={{ animationDelay: `${index * 0.05}s` }}
         >
-          <NoteCard note={note} onDelete={onDeleteNote} />
+          <NoteCard note={note} onDelete={onDeleteNote} onClick={onEditNote} />
         </div>
       ))}
     </div>

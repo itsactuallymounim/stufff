@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,12 +17,16 @@ interface CreateNoteDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCreateNote: (note: Omit<Note, "id" | "createdAt">) => void;
+  editingNote?: Note | null;
+  onUpdateNote?: (id: string, note: Omit<Note, "id" | "createdAt">) => void;
 }
 
 const CreateNoteDialog = ({
   open,
   onOpenChange,
   onCreateNote,
+  editingNote,
+  onUpdateNote,
 }: CreateNoteDialogProps) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -31,6 +35,24 @@ const CreateNoteDialog = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const clearErrors = () => setErrors({});
+
+  // Sync form state when opening for edit or create
+  useEffect(() => {
+    if (open) {
+      if (editingNote) {
+        setTitle(editingNote.title);
+        setContent(editingNote.content);
+        setColor(editingNote.color);
+        setSize(editingNote.size);
+      } else {
+        setTitle("");
+        setContent("");
+        setColor(noteColors[0].value);
+        setSize("small");
+      }
+      clearErrors();
+    }
+  }, [open, editingNote]);
 
   const handleSubmit = () => {
     clearErrors();
@@ -58,13 +80,18 @@ const CreateNoteDialog = ({
       return;
     }
 
-    // Use the sanitized data from validation
-    onCreateNote({
+    const payload = {
       title: validation.data.title,
       content: validation.data.content,
       color: validation.data.color,
       size: validation.data.size,
-    });
+    };
+
+    if (editingNote && onUpdateNote) {
+      onUpdateNote(editingNote.id, payload);
+    } else {
+      onCreateNote(payload);
+    }
 
     // Reset form
     setTitle("");
@@ -89,7 +116,9 @@ const CreateNoteDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md glass border-0 shadow-soft">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">New Note</DialogTitle>
+          <DialogTitle className="text-xl font-semibold">
+            {editingNote ? "Edit Note" : "New Note"}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 pt-2">
@@ -211,7 +240,7 @@ const CreateNoteDialog = ({
             className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
             type="button"
           >
-            Create Note
+            {editingNote ? "Save Changes" : "Create Note"}
           </Button>
         </div>
       </DialogContent>
