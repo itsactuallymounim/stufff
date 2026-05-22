@@ -137,4 +137,87 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* Card shimmer border effect */
+  .card-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-shimmer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.05) 25%,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0.05) 75%,
+      rgba(255, 255, 255, 0.3) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .card-shimmer:hover::before {
+    opacity: 1;
+  }
+
+  /* Glass depth overlay */
+  .glass-depth {
+    position: relative;
+  }
+
+  .glass-depth::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      ellipse at 20% 0%,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  /* Subtle float on hover */
+  .card-float {
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+  }
+
+  .card-float:hover {
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: 0 32px 64px -16px hsl(220 15% 10% / 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+}
+
+@layer base {
+  @keyframes card-enter {
+    0% {
+      opacity: 0;
+      transform: translateY(16px) scale(0.97);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes shimmer-sweep {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
 }

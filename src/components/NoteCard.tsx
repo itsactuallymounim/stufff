@@ -46,10 +46,10 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
       }}
       className={`
         ${sizeClasses[note.size]}
-        group relative p-5 rounded-2xl shadow-soft
-        transition-all duration-300 ease-out
-        hover:scale-[1.02] hover:shadow-lg
-        animate-scale-in cursor-pointer
+        group relative p-5 rounded-2xl
+        cursor-pointer overflow-hidden
+        card-shimmer glass-depth card-float
+        animate-scale-in
       `}
       style={{ backgroundColor: note.color }}
     >
@@ -91,8 +91,8 @@ const NoteCard = ({ note, onDelete, onClick }: NoteCardProps) => {
         </p>
       </div>
 
-      {/* Subtle glass overlay */}
-      <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white/20 to-transparent" />
+      {/* Refined glass overlay */}
+      <div className="absolute inset-0 rounded-2xl pointer-events-none bg-gradient-to-br from-white/10 via-transparent to-white/5" />
 
       {/* AI Summary panel */}
       {showSummary && (

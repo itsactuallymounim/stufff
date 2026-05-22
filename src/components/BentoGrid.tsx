@@ -28,7 +28,8 @@ const BentoGrid = ({ notes, onDeleteNote, onEditNote }: BentoGridProps) => {
       {notes.map((note, index) => (
         <div
           key={note.id}
-          style={{ animationDelay: `${index * 0.05}s` }}
+          className="animate-scale-in"
+          style={{ animationDelay: `${index * 0.06}s`, animationFillMode: "both" }}
         >
           <NoteCard note={note} onDelete={onDeleteNote} onClick={onEditNote} />
         </div>
