@@ -198,6 +198,47 @@
     transform: translateY(-4px) scale(1.015);
     box-shadow: 0 32px 64px -16px hsl(220 15% 10% / 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
   }
+
+  /* Stacked layered card effect */
+  .card-stack {
+    isolation: isolate;
+  }
+
+  .card-stack-layer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-radius: 1rem;
+    pointer-events: none;
+    box-shadow: 0 10px 30px -12px hsl(220 15% 10% / 0.18);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease;
+    filter: brightness(0.92);
+  }
+
+  .card-stack-layer--mid {
+    top: 8%;
+    bottom: -10%;
+    margin-inline: 6%;
+    opacity: 0.85;
+    z-index: -1;
+  }
+
+  .card-stack-layer--back {
+    top: 16%;
+    bottom: -20%;
+    margin-inline: 12%;
+    opacity: 0.65;
+    filter: brightness(0.82);
+    z-index: -2;
+  }
+
+  .card-stack:hover .card-stack-layer--mid {
+    transform: translateY(6px);
+  }
+
+  .card-stack:hover .card-stack-layer--back {
+    transform: translateY(12px);
+  }
 }
 
 @layer base {
